@@ -1,0 +1,11 @@
+---
+- name: Converge
+  hosts: all
+  vars:
+    users:
+      - { username: test_user, groups: [sudo], shell: /bin/bash, home: /home/test_user, passwordless_sudo: false, authorized_keys: [files/test_key.pub]}
+      - { username: test_deployment, groups: [nopasswd_sudo], uid: 9999, shell: /bin/bash, home: /home/test_deployment, passwordless_sudo: true, authorized_keys: [files/test_key.pub]}
+  tasks:
+    - name: "Include ansible_role_user"
+      include_role:
+        name: "ansible_role_user"

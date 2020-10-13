@@ -1,0 +1,8 @@
+---
+users:
+  - { username: user, groups: [sudo], shell: /bin/bash, home: /home/user, passwordless_sudo: false, authorized_keys: [~/.ssh/id_rsa.pub]}
+  - { username: ansible, groups: [nopasswd_sudo], uid: 9999, shell: /bin/bash, home: /home/ansible, passwordless_sudo: true, authorized_keys: [~/.ssh/id_rsa.pub]}
+
+sudoers_groups:
+  - { name: "sudo", perms: "ALL=(ALL:ALL) ALL" }
+  - { name: "nopasswd_sudo", perms: "ALL=(ALL:ALL) NOPASSWD:ALL" }

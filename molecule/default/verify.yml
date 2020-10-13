@@ -1,0 +1,40 @@
+---
+# This is an example playbook to execute Ansible tests.
+
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Get user if it exists
+      getent:
+        database: passwd
+
+    - name: Assert users exist
+      assert:
+        that: "getent_passwd['{{ item }}'] is defined"
+      with_items:
+        - test_user
+        - test_deployment
+
+    - name: Assert test_deployment UID is correct
+      assert:
+        that: getent_passwd['test_deployment'].1 == '9999'
+
+    - name: Assert home directories are created
+      assert:
+        that: "{{ getent_passwd[item].4 == '/home/' + item }}"
+      with_items:
+        - test_user
+        - test_deployment
+
+    - name: Get authorized_keys for user
+      shell: cat "{{ getent_passwd[item][4] }}"/.ssh/authorized_keys
+      register: authorized_keys
+      with_items:
+        - test_user
+        - test_deployment
+
+    - name: Verify authorized authorized_keys of users
+      assert:
+        that: "{{ item.stdout == 'ssh-rsa testkeytestkey '}}"
+      with_items:
+        - "{{ authorized_keys.results }}"

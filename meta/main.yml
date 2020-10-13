@@ -1,0 +1,17 @@
+galaxy_info:
+  author: Manolis M.
+  role_name: user_creation
+  description: Ansible role to create admin and deployment users.
+  company: NaN
+  license: MIT
+  platforms:
+    - name: Ubuntu
+      versions:
+        - focal
+  min_ansible_version: 2.9
+  galaxy_tags:
+    - users
+    - security
+    - ubuntu
+    - systems
+dependencies: []
