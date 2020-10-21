@@ -1,6 +1,6 @@
 ---
 - name: Expire user password
   command: chage -d 0 {{ item.username }}
-  when: "{{ item.set_password is true }}"
+  when: item.set_password is true
   with_items:
     - "{{ users }}"
