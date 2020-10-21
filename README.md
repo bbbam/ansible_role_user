@@ -21,6 +21,7 @@ Although there are some "sane" defaults, the following can be set.
   - { username: user,
     groups: [sudo],
     shell: /bin/bash,
+    set_password: true,
     home: /home/user,
     passwordless_sudo: false,
     authorized_keys: [~/.ssh/id_rsa.pub]
@@ -33,7 +34,8 @@ Although there are some "sane" defaults, the following can be set.
     passwordless_sudo: true,
     authorized_keys: [~/.ssh/id_rsa.pub]}
 ```
-Mind that some vars are optional (groups, uid).
+Mind that some vars are optional (groups, uid, set_password).
+Beware of `set_password`. If used, it will store the password in `/tmp/user_password` and you will be forced to change the password during the first login. If you omit it, it will lock the password (`usermod -L`). You prefer the latter for deployment accounts and nopasswd sudo.
 * sudoers
 ```
 sudoers_groups:
