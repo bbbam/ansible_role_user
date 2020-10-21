@@ -27,15 +27,16 @@
     name: "{{ item.username }}"
     append: "{{ true if item.groups is defined else omit }}"
     groups: "{{ item.groups | default(omit) }}"
-    password: "{{ lookup('password', '/dev/null length=15') if
-      item.passwordless_sudo else
-      lookup('password', '/tmp/user_password length=15') | password_hash('sha512') }}"
+    password: "{{ (lookup('password', '/tmp/user_password length=15') | password_hash('sha512'))
+      if (item.set_password is defined) else omit }}"
     uid: "{{ item.uid | default(omit) }}"
     shell: "{{ item.shell }}"
     home: "{{ item.home }}"
     update_password: on_create
+  notify: Expire user password
   with_items:
     - "{{ users }}"
+
 
 - name: Add authorized keys for user
   authorized_key:
